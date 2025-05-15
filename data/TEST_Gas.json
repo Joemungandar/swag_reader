@@ -1,0 +1,30 @@
+[
+    {
+        "Datum": "01.03.2015",
+        "Zählerstand_Gas": 1000
+    },
+    {
+        "Datum": "01.06.2015",
+        "Zählerstand_Gas": 1300
+    },
+    {
+        "Datum": "08.09.2015",
+        "Zählerstand_Gas": 1600
+    },
+    {
+        "Datum": "02.12.2015",
+        "Zählerstand_Gas": 1820
+    },
+    {
+        "Datum": "06.02.2016",
+        "Zählerstand_Gas": 2000
+    },
+    {
+        "Datum": "04.04.2016",
+        "Zählerstand_Gas": 2180
+    },
+    {
+        "Datum": "01.06.2016",
+        "Zählerstand_Gas": 2360
+    }
+]
