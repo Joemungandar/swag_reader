@@ -26,6 +26,9 @@ def change_color_unit(category):
     return "black", "(kWh)"
 
 def read_data_from_file(data_name) -> list:
+    # FÜR TEST-AUSLESUNG, UNBEDINGT DIESE ZEILE LASSEN, ANSONSTEN ENTFERNEN/Auskommentieren
+    data_name = "TEST_" + data_name
+    # --------------
     try:
         path_to_file = os.path.join(os.getcwd(),"data",data_name)
         with open(path_to_file, "r", encoding="UTF-8") as json_data:
