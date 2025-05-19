@@ -15,6 +15,7 @@ category = StringVar(mgr_frame)
 # TODO:Detect Key in Python (keylistener)
 
 ### Methoden:
+# Methode, um Daten aus der gespeicherten json-Datei zu löschen
 def erase_data():
     confirmed = tkinter.messagebox.askyesno(title="Eingabe leeren",message="Bist Du sicher?")
     if confirmed:
@@ -23,22 +24,25 @@ def erase_data():
         global datepicker_erase_from, datepicker_erase_until
         erase_from = datepicker_erase_from.get()
         erase_until = datepicker_erase_until.get()
-        # print(file_name)
-        # print(erase_from, type(erase_from))
-        # print(erase_until, type(erase_until))
         success = mgdh.delete_from_Json_file(file_name, erase_from, erase_until)
         if not success:
             tkinter.messagebox.askyesno(title="Eingabefehler", message="Fehler bei der Eingabe! Bitte überprüfe, ob das Datum unten weiter in der Zukunft liegt, als das Datum oben!")
 
 
-
 # Methode zum Aufruf eines Extra-Fensters zum Leeren aller Textfelder & Anzeigen
 def erase_data_menu():
+
+    # Untermethode, um das Extra-Fenster wieder zu schließen
+    def close_window():
+        top.destroy()
+        top.update()
+
     print("Daten löschen gedrückt...")
     top = Toplevel(mgr)
     top.configure(bg="black")
     top_frame = Frame(top, relief=RAISED,bd=8,bg="green")
 
+    # Label, Button:
     label_erase = Label(top_frame, text = "DATEN LÖSCHEN", font=30, background="green", height=4)
     label_from = Label(top_frame, text = "VON:", background="green", height=2)
     label_until = Label(top_frame, text = "BIS (inkl.):", background="green", height=2)
@@ -46,13 +50,9 @@ def erase_data_menu():
     datepicker_erase_from = DateEntry(top_frame, width=12, background="lime", foreground="black", date_pattern="dd.mm.yyyy")
     datepicker_erase_until = DateEntry(top_frame, width=12, background="lime", foreground="black", date_pattern="dd.mm.yyyy")
     button_erase_data = Button(top_frame, bg="red",fg="black", text="Daten löschen", command=erase_data)
-
-    def close_window():
-        top.destroy()
-        top.update()
-
     button_close = Button(top_frame, bg="orange", fg="black", text="Fenster schließen", command=close_window)
 
+    # Layout:
     top_frame.grid()
     label_erase.grid(columnspan=2)
     label_from.grid()
@@ -119,11 +119,13 @@ def update_unit(event):
         label_unit_2["text"] = "m³"
     update_last_reading()
 
+# GUI-Methode zum Anzeigen des Graphen (Linien-Diagramm)
 def show_graph_gui():
     tmp_category = category.get()
     print("Zeige Zählerstand", tmp_category, "..." )
     mgdh.show_graph(tmp_category)
 
+# GUI-Methode zum Anzeigen des Verbrauchs (Balken-diagramm)
 def show_consumption_gui():
     tmp_category = category.get()
     print("Zeige Verbrauch", tmp_category, "...")
