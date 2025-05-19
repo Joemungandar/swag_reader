@@ -84,6 +84,7 @@ def save_as_json():
         }
         print("Speichere...")
         mgdh.save_To_Json_File(json_file, new_entry)
+        update_last_reading()
         print("Speichern erfolgreich!")
     except(ValueError):
         error_message = "Bitte Gib in das Feld eine gültige Dezimalzahl ein (mit PUNKT, kein Text, kein Komma!)"
@@ -94,6 +95,11 @@ def save_as_json():
 def update_last_reading():
     data_name = category.get() + ".json"
     tmp_list_readings = mgdh.read_data_from_file(data_name)
+    if len(tmp_list_readings) == 0:
+        print("Keine gefüllte Liste gefunden")
+        label_info_last_reading["text"] = "---"
+        default_date = "01.01.0001"
+        return 0.0, default_date
     last_entry = tmp_list_readings[-1]
     reading_category = "Zählerstand_" + category.get()
     last_reading = last_entry[reading_category]
