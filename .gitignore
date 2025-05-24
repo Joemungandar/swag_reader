@@ -3,7 +3,6 @@ tk-inter-datepicker.py
 
 # Ordner ignorieren
 __pycache__/*
-env/*
 tests/*
 
 # Ignoriere alle Dateien im Ordner /data außer die TEST-Dateien
