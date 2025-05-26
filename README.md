@@ -11,7 +11,7 @@
 - tkcalendar (Python-Package)
 
 
-## Anleitung
+## Anleitung (Start)
 
 1. Am besten eignet sich dafür ein virtuelles Environment in Python:\
 `python3 -m venv env`
@@ -26,3 +26,7 @@
 
 4. Datei (GUI_meter_graph_reader.py) ausführbar:\
 `python GUI_meter_graph_reader.py`
+
+## Aktuelle Ideen/Erweiterungen
+
+1. Keylistener: Am Besten lasse ich nur Zahlen und genau einen "." oder ein "," zu und sonst keine Eingaben, dann kommt es auch nicht zu Fehlermeldungen für falsche Eingaben.
