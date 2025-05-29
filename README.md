@@ -27,6 +27,12 @@
 4. Datei (GUI_meter_graph_reader.py) ausführbar:\
 `python GUI_meter_graph_reader.py`
 
+## Anleitung (Optionen)
+
+Wenn die App erfolgreich gestartet wurde, müsste folgendes Fenster zu sehen sein: \
+![App-Hauptmenü](tutorial_pictures/start_menue.png)
+
+
 ## Aktuelle Ideen/Erweiterungen
 
-1. Keylistener: Am Besten lasse ich nur Zahlen und genau einen "." oder ein "," zu und sonst keine Eingaben, dann kommt es auch nicht zu Fehlermeldungen für falsche Eingaben.
+1. Keylistener: Nur Ziffern (0 - 9) und "." wird als Eingabe zugelassen. (Weil nur Datums- und *float*-Eingaben notwendig)
