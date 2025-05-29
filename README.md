@@ -3,7 +3,7 @@
 **S**(trom)**Wa**(sser)**G**(as)-Tool
 
 ## Beschreibung
-Übersicht über Strom, Wasser &amp; Gas-Zählerstand und Verbrauch per matplotlib in python
+Eingabemöglichkeit und Übersicht über Strom-, Wasser- &amp; Gas-Zählerstande und Verbrauch per matplotlib in python
 
 ## Voraussetzungen (Requirements)
 - tk (Python-Package)

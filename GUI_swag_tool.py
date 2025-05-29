@@ -3,15 +3,15 @@
 from tkinter import *
 import tkinter.messagebox
 from tkcalendar import DateEntry
-import meter_graph_datahandler as mgdh
+import swag_datahandler as sdh
 
 
 # Grundaufbau:
-mgr = Tk()
-mgr.title("Zählerstand-Reader")
-mgr.configure(bg="black")
-mgr_frame = Frame(relief=RAISED,bd=8,bg="green")
-category = StringVar(mgr_frame)
+swag = Tk()
+swag.title("SWaG-Tool")
+swag.configure(bg="black")
+swag_frame = Frame(relief=RAISED,bd=8,bg="green")
+category = StringVar(swag_frame)
 # TODO:Detect Key in Python (keylistener)
 
 ### Methoden:
@@ -24,7 +24,7 @@ def erase_data():
         global datepicker_erase_from, datepicker_erase_until
         erase_from = datepicker_erase_from.get()
         erase_until = datepicker_erase_until.get()
-        success = mgdh.delete_from_Json_file(file_name, erase_from, erase_until)
+        success = sdh.delete_from_Json_file(file_name, erase_from, erase_until)
         if not success:
             tkinter.messagebox.askyesno(title="Eingabefehler", message="Fehler bei der Eingabe! Bitte überprüfe, ob das Datum unten weiter in der Zukunft liegt, als das Datum oben!")
 
@@ -45,7 +45,7 @@ def erase_data_menu():
         top.update()
 
     print("Daten löschen gedrückt...")
-    top = Toplevel(mgr)
+    top = Toplevel(swag)
     top.configure(bg="black")
     top_frame = Frame(top, relief=RAISED,bd=8,bg="green")
 
@@ -81,7 +81,7 @@ def save_as_json():
         if(last_reading > meter_value):
             tkinter.messagebox.askyesno(title="Messwert-Fehler", message="Es kann kein niedrigerer Wert als " + str(last_reading) + " eingegeben werden!")
             return
-        check_date = mgdh.check_dates(date, last_date)
+        check_date = sdh.check_dates(date, last_date)
         if not check_date:
             tkinter.messagebox.askyesno(title="Datum-Fehler", message="Es kann kein niedrigeres Datum als das letzte Datum (" + last_date + ") eingegeben werden!")
             return
@@ -90,7 +90,7 @@ def save_as_json():
             ("Zählerstand_" + category.get()): meter_value
         }
         print("Speichere...")
-        mgdh.save_To_Json_File(json_file, new_entry)
+        sdh.save_To_Json_File(json_file, new_entry)
         update_last_reading()
         print("Speichern erfolgreich!")
     except(ValueError):
@@ -101,7 +101,7 @@ def save_as_json():
 # Methode zur Ermittlung des letzten Zählerstands
 def update_last_reading():
     data_name = category.get() + ".json"
-    tmp_list_readings = mgdh.read_data_from_file(data_name)
+    tmp_list_readings = sdh.read_data_from_file(data_name)
     if len(tmp_list_readings) == 0:
         print("Keine gefüllte Liste gefunden")
         label_info_last_reading["text"] = "---"
@@ -130,42 +130,42 @@ def update_unit(event):
 def show_graph_gui():
     tmp_category = category.get()
     print("Zeige Zählerstand", tmp_category, "..." )
-    mgdh.show_graph(tmp_category)
+    sdh.show_graph(tmp_category)
 
 # GUI-Methode zum Anzeigen des Verbrauchs (Balken-diagramm)
 def show_consumption_gui():
     tmp_category = category.get()
     print("Zeige Verbrauch", tmp_category, "...")
-    mgdh.show_consumption(tmp_category)
+    sdh.show_consumption(tmp_category)
 
 # Labels:
-label_title = Label(mgr_frame, bg="green", fg="black", text="EINGABE_Zaehlerstand", font=30, height=4)
-label_category = Label(mgr_frame, bg="green", fg="black", text="Kategorie:", height=2)
-label_date = Label(mgr_frame, bg="green", fg="black", text="Datum:", height=2)
-label_meter_graph = Label(mgr_frame, bg="green", fg="black", text="Zählerstand:", height=2)
-label_seperator = Label(mgr_frame, bg="green", fg="black", text="-----------------------------------", height=2)
-label_last_reading = Label(mgr_frame, bg="green", fg="black", text="Letzter Zählerstand: ")
-label_info_last_reading = Label(mgr_frame, bg="lime", fg="black", text="")
-label_unit = Label(mgr_frame, bg="green", fg="black", text="kWh")
-label_unit_2 = Label(mgr_frame, bg="green", fg="black", text="kWh")
+label_title = Label(swag_frame, bg="green", fg="black", text="SWAG-Tool", font=30, height=4)
+label_category = Label(swag_frame, bg="green", fg="black", text="Kategorie:", height=2)
+label_date = Label(swag_frame, bg="green", fg="black", text="Datum:", height=2)
+label_meter_graph = Label(swag_frame, bg="green", fg="black", text="Zählerstand:", height=2)
+label_seperator = Label(swag_frame, bg="green", fg="black", text="-----------------------------------", height=2)
+label_last_reading = Label(swag_frame, bg="green", fg="black", text="Letzter Zählerstand: ")
+label_info_last_reading = Label(swag_frame, bg="lime", fg="black", text="")
+label_unit = Label(swag_frame, bg="green", fg="black", text="kWh")
+label_unit_2 = Label(swag_frame, bg="green", fg="black", text="kWh")
 
 # Drop-Down-Menu
 category.set("Strom")
 categories = ["Strom", "Wasser", "Gas", "Heizstrom"]
-category_menu = OptionMenu(mgr_frame, category, *categories, command=update_unit)
+category_menu = OptionMenu(swag_frame, category, *categories, command=update_unit)
 
 # Datums- & Textfelder:
-datepicker = DateEntry(mgr_frame, width=12, background="lime", foreground="black", date_pattern="dd.mm.yyyy")
-meter_graph = Entry(mgr_frame,bg="lime",fg="black")
+datepicker = DateEntry(swag_frame, width=12, background="lime", foreground="black", date_pattern="dd.mm.yyyy")
+meter_graph = Entry(swag_frame,bg="lime",fg="black")
 
 # Buttons:
-button_erase = Button(mgr_frame,bg="red",fg="black", text="Zählerstände löschen...", command=erase_data_menu)
-button_save = Button(mgr_frame,bg="orange", fg="white", text="Speichere Daten...", command=save_as_json)
-button_show_graph = Button(mgr_frame, bg="lime", fg="black", text="Plot Zählerstand", command=show_graph_gui)
-button_show_consumption = Button(mgr_frame, bg="lime", fg="black", text="Plot Verbrauch", command=show_consumption_gui)
+button_erase = Button(swag_frame,bg="red",fg="black", text="Zählerstände löschen...", command=erase_data_menu)
+button_save = Button(swag_frame,bg="orange", fg="white", text="Speichere Daten...", command=save_as_json)
+button_show_graph = Button(swag_frame, bg="lime", fg="black", text="Plot Zählerstand", command=show_graph_gui)
+button_show_consumption = Button(swag_frame, bg="lime", fg="black", text="Plot Verbrauch", command=show_consumption_gui)
 
 # Baue Umgebung:
-mgr_frame.grid()
+swag_frame.grid()
 # Labels
 label_title.grid(column=0,row=0, columnspan=4)
 label_category.grid(column=0, row=2)
@@ -187,10 +187,10 @@ button_show_graph.grid(column = 0, row=10, pady=10, padx= 20, columnspan=2)
 button_show_consumption.grid(column = 2, row=10, pady=10, padx= 20, columnspan=2)
 
 # Update_event
-mgr.after(1, update_last_reading)
+swag.after(1, update_last_reading)
 
 # Start Keylistener
-mgr.bind('<KeyPress>', keylistener)
+swag.bind('<KeyPress>', keylistener)
 
 # Starte Programm
-mgr.mainloop()
+swag.mainloop()
