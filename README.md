@@ -30,7 +30,8 @@
 ## Anleitung (Optionen)
 
 Wenn die App erfolgreich gestartet wurde, müsste folgendes Fenster zu sehen sein: \
-![](tutorial_pictures/start_menue.png)
+\
+![App-Hauptmenue](tutorial_pictures/start_menue.png)
 
 
 ## Aktuelle Ideen/Erweiterungen

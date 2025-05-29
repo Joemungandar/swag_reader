@@ -29,6 +29,13 @@ def erase_data():
             tkinter.messagebox.askyesno(title="Eingabefehler", message="Fehler bei der Eingabe! Bitte überprüfe, ob das Datum unten weiter in der Zukunft liegt, als das Datum oben!")
 
 
+def keylistener(event):
+    ACCEPTED = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
+    if not event.char in ACCEPTED:
+        pass  
+        # Dont let the character be inputed
+
+
 # Methode zum Aufruf eines Extra-Fensters zum Leeren aller Textfelder & Anzeigen
 def erase_data_menu():
 
@@ -181,6 +188,9 @@ button_show_consumption.grid(column = 2, row=10, pady=10, padx= 20, columnspan=2
 
 # Update_event
 mgr.after(1, update_last_reading)
+
+# Start Keylistener
+mgr.bind('<KeyPress>', keylistener)
 
 # Starte Programm
 mgr.mainloop()

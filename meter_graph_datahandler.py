@@ -43,9 +43,9 @@ def save_To_Json_File(data_name, new_entry, override = False):
         print("Ordner existiert nicht! Erstelle Ordner...")
         os.mkdir(path_to_file)
     # ---- FÜR TEST, UNBEDINGT DIESE ZEILE LASSEN, ANSONSTEN ENTFERNEN/Auskommentieren
-    data_name = "TEST_" + data_name
+    data_name_TEST = "TEST_" + data_name
     # ----- TEST ---------
-    path_to_file = os.path.join(path_to_file, data_name)
+    path_to_file = os.path.join(path_to_file, data_name_TEST) # "_TEST" entfernen, wenn Tests abgeschlossen sind
     date = None
     if override:
         print("Datei wird komplett überschrieben!")
@@ -82,7 +82,7 @@ def delete_from_Json_file(data_name, delete_from, delete_until):
         tmp_element_date = dt.datetime.strptime(tmp_element.get("Datum"), "%d.%m.%Y").date()
         print("Neuer Erster Eintrag (Datum): ", tmp_element_date)
     print("Löschen war erfolgreich!")
-    save_To_Json_File(data_name, current_data, True)
+    save_To_Json_File(data_name, current_data, override=True)
     return True
         
 
@@ -120,6 +120,8 @@ def show_graph(category):
 
 
 def show_consumption(category):
+    # Falls offen: schließe alten Plot
+    plt.close()
     data_list = read_data_from_file(category + ".json")
 
     consumption = []
