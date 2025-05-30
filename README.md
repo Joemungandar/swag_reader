@@ -31,9 +31,9 @@ Eingabemöglichkeit und Übersicht über Strom-, Wasser- &amp; Gas-Zählerstande
 
 Wenn die App erfolgreich gestartet wurde, müsste folgendes Fenster zu sehen sein: \
 \
-![App-Hauptmenue](tutorial_pictures/start_menue.png)
+![App-Hauptmenue](tutorial_pictures/swag_main_menue.png)
 
 
-## Aktuelle Ideen/Erweiterungen
+## Aktuelle Erweiterungen
 
-1. Keylistener: Nur Ziffern (0 - 9) und "." wird als Eingabe zugelassen. (Weil nur Datums- und *float*-Eingaben notwendig)
+1. Keylistener: Nur Ziffern (0 - 9) und "." wird als Eingabe zugelassen. (Weil nur *float*-Eingaben notwendig)

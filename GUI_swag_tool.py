@@ -12,7 +12,6 @@ swag.title("SWaG-Tool")
 swag.configure(bg="black")
 swag_frame = Frame(relief=RAISED,bd=8,bg="green")
 category = StringVar(swag_frame)
-# TODO:Detect Key in Python (keylistener)
 
 ### Methoden:
 # Methode, um Daten aus der gespeicherten json-Datei zu löschen
@@ -29,11 +28,14 @@ def erase_data():
             tkinter.messagebox.askyesno(title="Eingabefehler", message="Fehler bei der Eingabe! Bitte überprüfe, ob das Datum unten weiter in der Zukunft liegt, als das Datum oben!")
 
 
-def keylistener(event):
-    ACCEPTED = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
-    if not event.char in ACCEPTED:
-        pass  
-        # Dont let the character be inputed
+# Methode, die nur float-Zahlen innerhalb eines "Entry" zulässt
+def keylistener(inp):
+    try:
+        float(inp)
+    except ValueError:
+        return inp == ""
+    else:
+        return True
 
 
 # Methode zum Aufruf eines Extra-Fensters zum Leeren aller Textfelder & Anzeigen
@@ -74,7 +76,7 @@ def erase_data_menu():
 def save_as_json():
     json_file = category.get() + ".json"
     try:
-        meter_value = float(meter_graph.get())
+        meter_value = float(input_meter_reading.get())
         date = datepicker.get()
         last_reading, last_date = update_last_reading()
         print(last_date, type(last_date))
@@ -156,7 +158,11 @@ category_menu = OptionMenu(swag_frame, category, *categories, command=update_uni
 
 # Datums- & Textfelder:
 datepicker = DateEntry(swag_frame, width=12, background="lime", foreground="black", date_pattern="dd.mm.yyyy")
-meter_graph = Entry(swag_frame,bg="lime",fg="black")
+input_meter_reading = Entry(swag_frame,bg="lime",fg="black")
+
+# Start Keylistener
+allow_only_numbers = swag.register(keylistener)
+input_meter_reading.config(validate="key", validatecommand=(allow_only_numbers, "%P"))
 
 # Buttons:
 button_erase = Button(swag_frame,bg="red",fg="black", text="Zählerstände löschen...", command=erase_data_menu)
@@ -179,7 +185,7 @@ label_unit_2.grid(column=2, row=6)
 # Eingabe-Felder
 category_menu.grid(column=1, row=2)
 datepicker.grid(column=1, row=3)
-meter_graph.grid(column=1, row=4)
+input_meter_reading.grid(column=1, row=4)
 # Buttons
 button_save.grid(column=0, row=8, pady=10, padx=20, columnspan=4)
 button_erase.grid(column=0, row=9, columnspan=4)
@@ -188,9 +194,6 @@ button_show_consumption.grid(column = 2, row=10, pady=10, padx= 20, columnspan=2
 
 # Update_event
 swag.after(1, update_last_reading)
-
-# Start Keylistener
-swag.bind('<KeyPress>', keylistener)
 
 # Starte Programm
 swag.mainloop()
