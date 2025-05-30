@@ -26,9 +26,6 @@ def change_color_unit(category):
     return "black", "(kWh)"
 
 def read_data_from_file(data_name) -> list:
-    # ---- FÜR TEST, UNBEDINGT DIESE ZEILE LASSEN, ANSONSTEN ENTFERNEN/Auskommentieren
-    data_name = "TEST_" + data_name
-    # ----- TEST ---------
     try:
         path_to_file = os.path.join(os.getcwd(),"data",data_name)
         with open(path_to_file, "r", encoding="UTF-8") as json_data:
@@ -42,10 +39,7 @@ def save_To_Json_File(data_name, new_entry, override = False):
     if not os.path.exists(path_to_file):
         print("Ordner existiert nicht! Erstelle Ordner...")
         os.mkdir(path_to_file)
-    # ---- FÜR TEST, UNBEDINGT DIESE ZEILE LASSEN, ANSONSTEN ENTFERNEN/Auskommentieren
-    data_name_TEST = "TEST_" + data_name
-    # ----- TEST ---------
-    path_to_file = os.path.join(path_to_file, data_name_TEST) # "_TEST" entfernen, wenn Tests abgeschlossen sind
+    path_to_file = os.path.join(path_to_file, data_name)
     date = None
     if override:
         print("Datei wird komplett überschrieben!")
