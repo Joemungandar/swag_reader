@@ -85,7 +85,7 @@ def save_as_json():
             return
         check_date = sdh.check_dates(date, last_date)
         if not check_date:
-            tkinter.messagebox.askyesno(title="Datum-Fehler", message="Es kann kein niedrigeres Datum als das letzte Datum (" + last_date + ") eingegeben werden!")
+            tkinter.messagebox.askyesno(title="Datum-Fehler", message="Es kann kein niedrigeres oder gleiches Datum als das letzte Datum (" + last_date + ") eingegeben werden!")
             return
         new_entry = {
             "Datum": datepicker.get(),

@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 def check_dates(date_1, date_2):
     date_to_check = dt.datetime.strptime(date_1, "%d.%m.%Y").date()
     date_threshold = dt.datetime.strptime(date_2, "%d.%m.%Y").date()
-    if date_threshold > date_to_check:
+    if date_threshold >= date_to_check:
         return False
     return True
 
@@ -66,21 +66,30 @@ def save_To_Json_File(data_name, new_entry, override = False):
 # TODO: Edge-Cases überprüfen: Datei leer & Datei enthält nur einen Eintrag
 def delete_from_Json_file(data_name, delete_from, delete_until):
     current_data = read_data_from_file(data_name)
+    if current_data == []:
+        print("Leere Liste, es gibt nichts zu löschen")
+        return
     print(current_data)
     date_delete_from = dt.datetime.strptime(delete_from, "%d.%m.%Y").date()
     date_delete_until = dt.datetime.strptime(delete_until, "%d.%m.%Y").date()
     tmp_element = current_data[0]
     tmp_element_date = dt.datetime.strptime(tmp_element.get("Datum"), "%d.%m.%Y").date()
     print("Erster Eintrag (Datum):", tmp_element_date, type(tmp_element_date))
-    # Schleife:
+    # Check: Datumseingabe oben mus <= unten sein!
     if (date_delete_until < date_delete_from):
         return False
-    while (date_delete_from <= tmp_element_date) and (tmp_element_date <= date_delete_until):
-        print("Element wird gelöscht!")
+    # Randfall: Nur 1 Element in der Liste:
+    if len(current_data) == 1:
+        print("ACHTUNG: Nur 1 Element in der Liste! Nach dieser Aktion ist die Liste leer")
         current_data.remove(tmp_element)
-        tmp_element = current_data[0]
-        tmp_element_date = dt.datetime.strptime(tmp_element.get("Datum"), "%d.%m.%Y").date()
-        print("Neuer Erster Eintrag (Datum): ", tmp_element_date)
+    else:
+        # Schleife:
+        while (date_delete_from <= tmp_element_date) and (tmp_element_date <= date_delete_until):
+            print("Element wird gelöscht!")
+            current_data.remove(tmp_element)
+            tmp_element = current_data[0]
+            tmp_element_date = dt.datetime.strptime(tmp_element.get("Datum"), "%d.%m.%Y").date()
+            print("Neuer Erster Eintrag (Datum): ", tmp_element_date)
     print("Löschen war erfolgreich!")
     save_To_Json_File(data_name, current_data, override=True)
     return True
@@ -122,19 +131,20 @@ def show_graph(category):
 def show_consumption(category):
     # Falls offen: schließe alten Plot
     plt.close()
+
     data_list = read_data_from_file(category + ".json")
 
     consumption = []
     date = []
 
-    tmp_reading_before = 0
-    tmp_reading_after = data_list[0]["Zählerstand_" + category]
-
-    for element in data_list:
-        date.append(element["Datum"])
-        tmp_reading_before = tmp_reading_after
-        tmp_reading_after = element["Zählerstand_" + category]
-        consumption.append((tmp_reading_after - tmp_reading_before))
+    if data_list != []:
+        tmp_reading_before = 0
+        tmp_reading_after = data_list[0]["Zählerstand_" + category]
+        for element in data_list:
+            date.append(element["Datum"])
+            tmp_reading_before = tmp_reading_after
+            tmp_reading_after = element["Zählerstand_" + category]
+            consumption.append((tmp_reading_after - tmp_reading_before))
 
     print(consumption)
     print(date)
@@ -167,4 +177,4 @@ if __name__ == "__main__":
     print("Der 29. Februar 2020 kommt vor dem 31.Dezember 2020:", check_dates(dec_31_2020, feb_29_2020))
     print("Der 29. Februar 2024 kommt vor dem 31.Dezember 2020:", check_dates(dec_31_2020, feb_29_2024))
     
-    delete_from_Json_file("TEST_Strom.json", "01.01.2015", "31.12.2015")
+    delete_from_Json_file("Strom.json", "01.01.2015", "31.12.2015")
